@@ -1,0 +1,125 @@
+──────────────────────────────
+📦 EXPLICAÇÃO DO CÓDIGO DE CLASSES EM TYPESCRIPT
+──────────────────────────────
+
+1️⃣ Classe Person
+──────────────────────────────
+class Person {
+  public name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  print(): void {
+    console.log(`Name: ${this.name}`);
+  }
+}
+
+- `class Person` → define uma classe chamada Person.
+- `public name: string` → propriedade pública; acessível de qualquer lugar.
+- `constructor(name: string)` → função especial chamada quando você cria um objeto. Inicializa `name`.
+- `print()` → método da classe que mostra o nome no terminal.
+- Uso:
+    let p1 = new Person("Alyse");
+    p1.print(); // Saída: Name: Alyse
+
+──────────────────────────────
+2️⃣ Classe Employee (Herança)
+──────────────────────────────
+class Employee extends Person {
+  private _salary: number;
+
+  constructor(name: string, salary: number) {
+    super(name); // Chama o constructor da classe pai (Person)
+    this._salary = salary; // Inicializa a propriedade privada _salary
+  }
+
+  print(): void {
+    console.log(`Name: ${this.name}, Salary: ${this._salary}`);
+  }
+
+  get salary(): number {
+    return this._salary;
+  }
+
+  set salary(value: number) {
+    this._salary = value;
+  }
+}
+
+- `extends Person` → Employee herda Person.
+- `super(name)` → chama o construtor da classe pai para inicializar `name`.
+- `private _salary` → só acessível dentro da classe Employee.
+- `get salary()` / `set salary()` → permite acessar `_salary` de fora de forma controlada.
+- `print()` sobrescreve o método da classe pai (polimorfismo).
+
+- Uso:
+    let emp1 = new Employee("Jane", 3000);
+    emp1.print(); // Saída: Name: Jane, Salary: 3000
+    console.log(emp1.salary); // Saída: 3000
+    emp1.salary = 3500;
+    console.log(emp1.salary); // Saída: 3500
+
+──────────────────────────────
+3️⃣ Modificadores de acesso
+──────────────────────────────
+- `public` → acessível de qualquer lugar (default).
+- `private` → acessível somente dentro da própria classe.
+- `protected` → acessível dentro da classe e subclasses, mas não fora.
+
+Exemplo:
+    emp1.name = "Novo Nome"; // ✅ permitido, name é public
+    emp1._salary = 4000;     // ❌ erro, _salary é private
+    emp1.salary = 4000;      // ✅ permitido, usa setter público
+
+──────────────────────────────
+4️⃣ Polimorfismo e variáveis do tipo Pai
+──────────────────────────────
+let p3: Person = new Employee("Lucy", 4000);
+p3.print(); 
+// Saída: Name: Lucy, Salary: 4000
+// Mesmo que p3 seja do tipo Person, o método sobrescrito em Employee é chamado.
+
+──────────────────────────────
+5️⃣ Criação e uso correto de instâncias
+──────────────────────────────
+- Sempre use `new Classe()` para criar objetos de classes.
+- Evite usar `<Person>{}` ou `{} as Person` com classes.
+  - Isso cria um objeto vazio e **não executa o construtor**, causando undefined.
+- Exemplo correto:
+    let p2 = new Person("Carlos");
+    p2.print(); // Name: Carlos
+
+──────────────────────────────
+6️⃣ Resumo visual de quando usar cada coisa
+──────────────────────────────
+- class + constructor → para criar objetos com lógica de inicialização
+- extends + super() → para herdar comportamento da classe pai
+- public → propriedades acessíveis de qualquer lugar
+- private → propriedades só acessíveis dentro da classe
+- protected → propriedades acessíveis na classe e subclasses
+- getter / setter → controlar acesso a propriedades privadas
+- sobrescrita de métodos → personalizar comportamento em subclasses
+- variáveis do tipo pai → permitem polimorfismo
+
+──────────────────────────────
+7️⃣ Exemplo de terminal
+──────────────────────────────
+let p1 = new Person("Alyse");
+let emp1 = new Employee("Jane", 3000);
+let p3: Person = new Employee("Lucy", 4000);
+
+p1.print();  // Name: Alyse
+emp1.print(); // Name: Jane, Salary: 3000
+console.log(emp1.salary); // 3000
+emp1.salary = 3500;
+console.log(emp1.salary); // 3500
+p3.print();  // Name: Lucy, Salary: 4000
+
+──────────────────────────────
+📌 Dica final
+──────────────────────────────
+- Use classes quando precisar de **construtores, métodos e lógica interna**
+- Prefira interfaces para **objetos simples sem comportamento**
+- Sempre inicialize propriedades obrigatórias no construtor
+- Use getters/setters + modificadores para controlar acesso seguro
+──────────────────────────────
